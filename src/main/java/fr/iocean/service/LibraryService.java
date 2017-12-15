@@ -4,14 +4,26 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
+
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import fr.iocean.model.Book;
 
 @Service
+@Transactional
 public class LibraryService {
+	
+	@PersistenceContext
+	protected EntityManager em;
 
 	public static LibraryService instance = null;
+	
+	public LibraryService() {
+	}
 
 	public static LibraryService getInstance() {
 		if (instance != null)
@@ -23,82 +35,35 @@ public class LibraryService {
 
 	private ArrayList<Book> list = new ArrayList<Book>();
 
-	public boolean addBook(Book b) {
-		if (list.contains(b.getId()))
-			return false;
-		list.add(b);
-		return true;
-	}
-
-	public boolean removeBook(Long id) {
-		for (Book b : list)
-			if (b.getId() == id) {
-				list.remove(b);
-				return true;
-			}
-		return false;
-	}
-
-	// public ArrayList<Book> search(String criteria){
-	// ArrayList<Book> result = new ArrayList<Book>();
-	// for(Book b: list)if(b.matches(criteria.toLowerCase()))result.add(b);
-	// return result;
-	// }
-
 	public boolean contains(Long id) {
 		return getById(id) != null;
 	}
+	
+	public void create(Book book) {
+		em.persist(book);
+	}
 
-	public Book getById(Long id) {
-		for (Book b : list)
-			if (b.getId() == id)
-				return b;
-		return null;
+	public void update(Book book) {
+		em.merge(book);
+	}
+
+	public void delete(Long id) {
+		em.remove(getById(id));
 	}
 
 	public List<Book> getAll() {
-		return list;
+		TypedQuery<Book> query = em.createQuery("select b from Book b", Book.class);
+
+		List<Book> books = query.getResultList();
+
+		return books;
 	}
 
-	public void update(Book b) {
-		for (Book bList : list) {
-			if (bList.getId() == b.getId()) {
-				list.remove(bList);
-				list.add(b);
-				break;
-			}
-		}
-	}
+	public Book getById(Long id) {
+		TypedQuery<Book> query = em.createQuery("select b from Book b where b.id =:bookId ", Book.class)
+									.setParameter("bookId", id);
 
-	private LibraryService() {
-
-		Book book = new Book();
-		book.setId(1L);
-		book.setTitle("L'Assassin royal - Tome 1");
-		book.setAuthor("Robin Hobb");
-		book.setNbPages(400);
-		book.setPublicationDate(new Date());
-		book.setIsbn("1234567891");
-
-		Book book2 = new Book();
-		book2.setId(2L);
-		book2.setTitle("L'Assassin royal - Tome 2");
-		book2.setAuthor("Robin Hobb");
-		book2.setNbPages(400);
-		book2.setPublicationDate(new Date());
-		book.setIsbn("12345678912");
-
-		Book book3 = new Book();
-		book3.setId(3L);
-		book3.setTitle("L'Assassin royal - Tome 3");
-		book3.setAuthor("Robin Hobb");
-		book3.setNbPages(400);
-		book3.setPublicationDate(new Date());
-		book.setIsbn("123456789123");
-
-		list.add(book);
-		list.add(book2);
-		list.add(book3);
+		return query.getSingleResult();
 	}
 
 }

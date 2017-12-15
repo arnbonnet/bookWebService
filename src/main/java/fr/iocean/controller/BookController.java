@@ -1,7 +1,6 @@
 package fr.iocean.controller;
 
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -15,9 +14,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 import fr.iocean.model.Book;
 import fr.iocean.service.LibraryService;
@@ -42,16 +38,6 @@ public class BookController {
 		LibraryService library = LibraryService.getInstance();
 		return library.getAll();
 
-//		ObjectMapper objectMapper = new ObjectMapper();
-//		String str = null;
-//		
-//		try {
-//			str = objectMapper.writeValueAsString(book) + "\n" + objectMapper.writeValueAsString(book2) + "\n" + objectMapper.writeValueAsString(book3);
-//		} catch (JsonProcessingException e) {
-//			e.printStackTrace();
-//		}
-//		return str;
-//		return Arrays.asList(book, book2, book3);
 	}
 	
 	@RequestMapping(method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
@@ -67,7 +53,7 @@ public class BookController {
 		
 		LibraryService library = LibraryService.getInstance();
 		System.out.println("Before create : " + library.getAll().size());
-		library.addBook(input);
+		library.create(input);
 		System.out.println("After create : " + library.getAll().size());
 		System.out.println("input book : " + input.toString());
 		
@@ -97,7 +83,7 @@ public class BookController {
 	public Long removeBook(@PathVariable Long id) {
 		LibraryService library = LibraryService.getInstance();
 		System.out.println("Before remove: " + library.getAll().size());
-		library.removeBook(id);
+		library.delete(id);
 		System.out.println("After remove: " + library.getAll().size());
 		
 		return id;

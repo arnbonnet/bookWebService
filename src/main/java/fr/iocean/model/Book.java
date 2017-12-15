@@ -2,6 +2,11 @@ package fr.iocean.model;
 
 import java.util.Date;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
@@ -9,25 +14,31 @@ import org.hibernate.validator.constraints.NotBlank;
 
 import fr.iocean.constraint.Isbn;
 
+@Entity
 public class Book {
 	
+	@Id
 	@Min(value=5)
 	private Long id;
 	
+	@Column(name="title")
 	@NotBlank
 	private String title;
 	
+	@Column(name="nb_pages")
 	@NotNull
 	private int nbPages;
 	
+	@Column(name="author")
 	@NotBlank
 	private String author;
 	
+	@Column(name="publication_date")
+	@Temporal(TemporalType.DATE)
 	private Date publicationDate;
-	
-//	@Size(min=10, max=14)
-//	@NotBlank
+
 	@Isbn
+	@Column(name="isbn")
 	private String isbn;
 	
 	public Book() {}
