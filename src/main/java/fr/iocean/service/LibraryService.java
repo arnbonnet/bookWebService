@@ -45,11 +45,11 @@ public class LibraryService {
 	// return result;
 	// }
 
-	public boolean contains(int id) {
+	public boolean contains(Long id) {
 		return getById(id) != null;
 	}
 
-	public Book getById(int id) {
+	public Book getById(Long id) {
 		for (Book b : list)
 			if (b.getId() == id)
 				return b;

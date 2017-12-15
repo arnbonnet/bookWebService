@@ -37,28 +37,7 @@ public class BookController {
 	public List<Book> getBooks() {
 		LibraryService library = LibraryService.getInstance();
 		return library.getAll();
-			
-//		Book book = new Book();
-//		book.setId(1L);
-//		book.setTitle("L'Assassin royal - Tome 1");
-//		book.setAuthor("Robin Hobb");
-//		book.setNbPages(400);
-//		book.setPublicationDate(new Date());
-//		
-//		Book book2 = new Book();
-//		book2.setId(2L);
-//		book2.setTitle("L'Assassin royal - Tome 2");
-//		book2.setAuthor("Robin Hobb");
-//		book2.setNbPages(400);
-//		book2.setPublicationDate(new Date());
-//		
-//		Book book3 = new Book();
-//		book3.setId(3L);
-//		book3.setTitle("L'Assassin royal - Tome 3");
-//		book3.setAuthor("Robin Hobb");
-//		book3.setNbPages(400);
-//		book3.setPublicationDate(new Date());
-//		
+					
 //		ObjectMapper objectMapper = new ObjectMapper();
 //		String str = null;
 //		
@@ -109,5 +88,11 @@ public class BookController {
 		System.out.println("After remove: " + library.getAll().size());
 		
 		return id;
+	}
+	
+	@RequestMapping(value="{id}", method = RequestMethod.GET)
+	public Book getById(@PathVariable Long id) {
+		LibraryService library = LibraryService.getInstance();
+		return library.getById(id);
 	}
 }
