@@ -78,6 +78,7 @@ public class LibraryService {
 		book.setAuthor("Robin Hobb");
 		book.setNbPages(400);
 		book.setPublicationDate(new Date());
+		book.setIsbn("1234567891");
 
 		Book book2 = new Book();
 		book2.setId(2L);
@@ -85,6 +86,7 @@ public class LibraryService {
 		book2.setAuthor("Robin Hobb");
 		book2.setNbPages(400);
 		book2.setPublicationDate(new Date());
+		book.setIsbn("12345678912");
 
 		Book book3 = new Book();
 		book3.setId(3L);
@@ -92,6 +94,7 @@ public class LibraryService {
 		book3.setAuthor("Robin Hobb");
 		book3.setNbPages(400);
 		book3.setPublicationDate(new Date());
+		book.setIsbn("123456789123");
 
 		list.add(book);
 		list.add(book2);

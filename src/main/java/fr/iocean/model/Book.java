@@ -2,17 +2,33 @@ package fr.iocean.model;
 
 import java.util.Date;
 
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+
+import org.hibernate.validator.constraints.NotBlank;
+
+import fr.iocean.constraint.Isbn;
+
 public class Book {
 	
+	@Min(value=5)
 	private Long id;
 	
+	@NotBlank
 	private String title;
 	
+	@NotNull
 	private int nbPages;
 	
+	@NotBlank
 	private String author;
 	
 	private Date publicationDate;
+	
+//	@Size(min=10, max=14)
+//	@NotBlank
+	@Isbn
+	private String isbn;
 	
 	public Book() {}
 	
@@ -48,13 +64,19 @@ public class Book {
 		this.publicationDate = publicationDate;
 	}
 
+	public String getIsbn() {
+		return isbn;
+	}
+
+	public void setIsbn(String isbn) {
+		this.isbn = isbn;
+	}
+
 	@Override
 	public String toString() {
 		return "Book [id=" + id + ", title=" + title + ", nbPages=" + nbPages + ", author=" + author
-				+ ", publicationDate=" + publicationDate + "]";
+				+ ", publicationDate=" + publicationDate + ", isbn=" + isbn + "]";
 	}
-	
-	
-	
+
 
 }

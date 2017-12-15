@@ -4,7 +4,11 @@ import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.http.MediaType;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -37,7 +41,7 @@ public class BookController {
 	public List<Book> getBooks() {
 		LibraryService library = LibraryService.getInstance();
 		return library.getAll();
-					
+
 //		ObjectMapper objectMapper = new ObjectMapper();
 //		String str = null;
 //		
@@ -51,7 +55,16 @@ public class BookController {
 	}
 	
 	@RequestMapping(method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-	public Long createBook(@RequestBody Book input) {
+	public Long createBook(@RequestBody @Valid Book input, BindingResult bindingResult) throws Exception {
+		if (bindingResult.hasErrors()) {
+			
+			System.out.println(bindingResult.getErrorCount());
+			for (ObjectError e: bindingResult.getAllErrors()) {
+				System.out.println(e.getCode()+" " +e.getDefaultMessage());
+				throw new Exception(e.getDefaultMessage());
+			}
+		}
+		
 		LibraryService library = LibraryService.getInstance();
 		System.out.println("Before create : " + library.getAll().size());
 		library.addBook(input);
