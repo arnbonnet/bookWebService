@@ -5,6 +5,7 @@ import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.Min;
@@ -15,6 +16,7 @@ import org.hibernate.validator.constraints.NotBlank;
 import fr.iocean.constraint.Isbn;
 
 @Entity
+@Table
 public class Book {
 	
 	@Id

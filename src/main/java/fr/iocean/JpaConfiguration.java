@@ -29,11 +29,11 @@ public class JpaConfiguration {
 	@Bean(name = "dataSource")
 	public DataSource dataSource() {
 		BoneCPDataSource dataSource = new BoneCPDataSource();
-		dataSource.setDriverClass("org.postgresql.Driver");
-		dataSource.setJdbcUrl("jdbc:postgresql://localhost:5432/spring");
-		dataSource.setUsername("postgres");
-		dataSource.setPassword("postgres");
-		dataSource.setIdleConnectionTestPeriodInMinutes(60);
+		dataSource.setDriverClass(env.getRequiredProperty("driverClass"));
+		dataSource.setJdbcUrl(env.getRequiredProperty("jdbcUrl"));
+		dataSource.setUsername(env.getRequiredProperty("jdbcUsername"));
+		dataSource.setPassword(env.getRequiredProperty("jdbcPassword"));
+		dataSource.setIdleConnectionTestPeriodInMinutes(5);
 		dataSource.setIdleMaxAgeInMinutes(1);
 		dataSource.setMinConnectionsPerPartition(5);
 		dataSource.setMaxConnectionsPerPartition(10);
@@ -47,7 +47,7 @@ public class JpaConfiguration {
 	public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
 		LocalContainerEntityManagerFactoryBean emf = new LocalContainerEntityManagerFactoryBean();
 		emf.setDataSource(dataSource());
-		emf.setPackagesToScan(new String[] { "app.model" });
+		emf.setPackagesToScan(new String[] { "fr.iocean.model" });
 		JpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
 		emf.setJpaVendorAdapter(vendorAdapter);
 		emf.setJpaProperties(additionalProperties());

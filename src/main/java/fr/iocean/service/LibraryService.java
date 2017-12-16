@@ -1,7 +1,6 @@
 package fr.iocean.service;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -52,9 +51,10 @@ public class LibraryService {
 	}
 
 	public List<Book> getAll() {
+		List<Book> books = new ArrayList<>();
 		TypedQuery<Book> query = em.createQuery("select b from Book b", Book.class);
 
-		List<Book> books = query.getResultList();
+		books = query.getResultList();
 
 		return books;
 	}
