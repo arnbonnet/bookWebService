@@ -17,7 +17,7 @@ import fr.iocean.model.Book;
 public class LibraryService {
 	
 	@PersistenceContext
-	protected EntityManager em;
+	private EntityManager em;
 
 	public static LibraryService instance = null;
 	
@@ -31,8 +31,6 @@ public class LibraryService {
 			instance = new LibraryService();
 		return instance;
 	}
-
-	private ArrayList<Book> list = new ArrayList<Book>();
 
 	public boolean contains(Long id) {
 		return getById(id) != null;
@@ -52,11 +50,14 @@ public class LibraryService {
 
 	public List<Book> getAll() {
 		List<Book> books = new ArrayList<>();
-		TypedQuery<Book> query = em.createQuery("select b from Book b", Book.class);
+		try {
+			TypedQuery<Book> query = em.createQuery("select b from Book b", Book.class);
+			books = query.getResultList();
+		} finally {
+		}
 
-		books = query.getResultList();
+		return books;			
 
-		return books;
 	}
 
 	public Book getById(Long id) {

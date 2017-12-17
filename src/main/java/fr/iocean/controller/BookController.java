@@ -5,6 +5,8 @@ import java.util.List;
 
 import javax.validation.Valid;
 
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.context.support.AbstractApplicationContext;
 import org.springframework.http.MediaType;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
@@ -15,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import fr.iocean.App;
 import fr.iocean.model.Book;
 import fr.iocean.service.LibraryService;
 
@@ -51,12 +54,11 @@ public class BookController {
 			}
 		}
 		
-		LibraryService library = LibraryService.getInstance();
-		System.out.println("Before create : " + library.getAll().size());
-		library.create(input);
-		System.out.println("After create : " + library.getAll().size());
-		System.out.println("input book : " + input.toString());
+		AbstractApplicationContext context = new AnnotationConfigApplicationContext(App.class);
+		LibraryService libraryService = context.getBean(LibraryService.class);
 		
+		libraryService.create(input);
+		context.close();
 		return input.getId();
 	}
 	

@@ -16,11 +16,11 @@ import org.hibernate.validator.constraints.NotBlank;
 import fr.iocean.constraint.Isbn;
 
 @Entity
-@Table
+@Table(name = "book")
 public class Book {
 	
 	@Id
-	@Min(value=5)
+	@Min(value=1)
 	private Long id;
 	
 	@Column(name="title")

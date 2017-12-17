@@ -9,7 +9,7 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 @ComponentScan("fr.iocean")
 public class App {
 	public App() {
-		
+		System.out.println("Application started");
 	}
 	
 	public static void main(String[] args) {
