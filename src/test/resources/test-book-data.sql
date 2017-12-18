@@ -1,0 +1,2 @@
+insert into book(id, title, nb_pages, author, isbn, publication_date) values (1, 'pre filled data 1', 400, 'robin hobb', '12345678912', CURRENT_TIMESTAMP);
+insert into book(id, title, nb_pages, author, isbn, publication_date) values (2, 'pre filled data 2', 400, 'robin hobb', '123456789123', CURRENT_TIMESTAMP);

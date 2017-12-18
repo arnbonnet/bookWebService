@@ -16,12 +16,12 @@ import fr.iocean.model.Book;
 @Service
 @Transactional
 public class LibraryService {
-	
+
 	@PersistenceContext
 	private EntityManager em;
 
 	public static LibraryService instance = null;
-	
+
 	public LibraryService() {
 	}
 
@@ -36,13 +36,14 @@ public class LibraryService {
 	public boolean contains(Long id) {
 		return getById(id) != null;
 	}
-	
+
 	public void create(Book book) {
 		em.persist(book);
 	}
 
-	public void update(Book book) {
+	public Book update(Book book) {
 		em.merge(book);
+		return book;
 	}
 
 	public void delete(Long id) {
@@ -54,18 +55,19 @@ public class LibraryService {
 		try {
 			TypedQuery<Book> query = em.createQuery("select b from Book b", Book.class);
 			books = query.getResultList();
-		} catch(NoResultException e) {
+		} catch (NoResultException e) {
 			return books;
 		}
 
-		return books;			
+		return books;
 
 	}
 
-	public Book getById(Long id) {
+	public Book getById(Long id) throws NoResultException {
 		TypedQuery<Book> query = em.createQuery("select b from Book b where b.id =:bookId ", Book.class)
-									.setParameter("bookId", id);
+				.setParameter("bookId", id);
 
+		
 		return query.getSingleResult();
 	}
 
