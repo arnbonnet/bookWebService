@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 
@@ -53,7 +54,8 @@ public class LibraryService {
 		try {
 			TypedQuery<Book> query = em.createQuery("select b from Book b", Book.class);
 			books = query.getResultList();
-		} finally {
+		} catch(NoResultException e) {
+			return books;
 		}
 
 		return books;			

@@ -5,8 +5,7 @@ import java.util.List;
 
 import javax.validation.Valid;
 
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
-import org.springframework.context.support.AbstractApplicationContext;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
@@ -17,13 +16,14 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import fr.iocean.App;
 import fr.iocean.model.Book;
 import fr.iocean.service.LibraryService;
 
 @RestController
 @RequestMapping("/books")
 public class BookController {
+	
+	@Autowired LibraryService service;
 	
 	@RequestMapping(value = "/hello", method = RequestMethod.GET)
 	public String foo() {
@@ -38,8 +38,7 @@ public class BookController {
 	
 	@RequestMapping(method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	public List<Book> getBooks() {
-		LibraryService library = LibraryService.getInstance();
-		return library.getAll();
+		return service.getAll();
 
 	}
 	
@@ -53,47 +52,27 @@ public class BookController {
 				throw new Exception(e.getDefaultMessage());
 			}
 		}
+		service.create(input);
 		
-		AbstractApplicationContext context = new AnnotationConfigApplicationContext(App.class);
-		LibraryService libraryService = context.getBean(LibraryService.class);
-		
-		libraryService.create(input);
-		context.close();
 		return input.getId();
 	}
 	
 	@RequestMapping(method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public Long updateBook(@RequestBody Book input) {
-		LibraryService library = LibraryService.getInstance();
-		System.out.println("Before update : ");
-		for(Book b : library.getAll()) {
-			System.out.println(b.toString());
-		}
-		
-		library.update(input);
-		
+		service.update(input);
 
-		System.out.println("After update : " + library.getAll().size());
-		for(Book b : library.getAll()) {
-			System.out.println(b.toString());
-		}
-		
 		return input.getId();
 	}
 	
 	@RequestMapping(value="{id}", method = RequestMethod.DELETE)
 	public Long removeBook(@PathVariable Long id) {
-		LibraryService library = LibraryService.getInstance();
-		System.out.println("Before remove: " + library.getAll().size());
-		library.delete(id);
-		System.out.println("After remove: " + library.getAll().size());
+		service.delete(id);
 		
 		return id;
 	}
 	
 	@RequestMapping(value="{id}", method = RequestMethod.GET)
 	public Book getById(@PathVariable Long id) {
-		LibraryService library = LibraryService.getInstance();
-		return library.getById(id);
+		return service.getById(id);
 	}
 }

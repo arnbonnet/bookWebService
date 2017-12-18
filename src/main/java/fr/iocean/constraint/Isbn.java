@@ -12,7 +12,7 @@ import javax.validation.Payload;
 @Target(value = ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Isbn {
-	String message() default "{validator.isbn}";
+	String message() default "La longeur de l'isbn doit être entre 10 et 14 caractères";
 
 	Class<?>[] groups() default {};
 
